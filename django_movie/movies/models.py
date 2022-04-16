@@ -1,3 +1,4 @@
+from django.urls import reverse
 from django.db import models
 from datetime import date
 # Create your models here.
@@ -59,6 +60,8 @@ class Movies(models.Model):
     country = models.CharField("Страна", max_length=30)
     director = models.ManyToManyField(
         Actor, verbose_name="Режиссер", related_name="film_director")
+    actors = models.ManyToManyField(
+        Actor, verbose_name="Актёры", related_name="film_actors")
     genres = models.ManyToManyField(Genre, verbose_name="Жанры")
     world_premiere = models.DateField("Премьера в мире", default=date.today)
     budget = models.PositiveIntegerField(
@@ -73,7 +76,10 @@ class Movies(models.Model):
     draft = models.BooleanField("Черновик", default=True)
 
     def __str__(self):
-        return self.name
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse("movie_detail", kwargs={'slug': self.url})
 
     class Meta:
         verbose_name = "Фильм"
@@ -108,8 +114,10 @@ class RatingStars(models.Model):
 
 class Rating(models.Model):
     ip = models.CharField("IP", max_length=15)
-    star = models.ForeignKey(RatingStars, on_delete=models.CASCADE, verbose_name="Звезды")
-    movie = models.ForeignKey(Movies, on_delete=models.CASCADE, verbose_name="Фильмы")
+    star = models.ForeignKey(
+        RatingStars, on_delete=models.CASCADE, verbose_name="Звезды")
+    movie = models.ForeignKey(
+        Movies, on_delete=models.CASCADE, verbose_name="Фильмы")
 
     def __str__(self):
         return f"{self.star} - {self.movie}"
@@ -118,12 +126,15 @@ class Rating(models.Model):
         verbose_name = "Рейтинг"
         verbose_name_plural = "Рейтинг"
 
+
 class Reviews(models.Model):
     email = models.EmailField()
     name = models.CharField("Имя", max_length=100)
     text = models.TextField("Сообщение", max_length=5000)
-    parent = models.ForeignKey('self', verbose_name="Родитель", on_delete=models.SET_NULL, blank=True, null=True)
-    movie = models.ForeignKey(Movies, verbose_name="фильм", on_delete=models.CASCADE)
+    parent = models.ForeignKey(
+        'self', verbose_name="Родитель", on_delete=models.SET_NULL, blank=True, null=True)
+    movie = models.ForeignKey(
+        Movies, verbose_name="фильм", on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.star} - {self.movie}"
