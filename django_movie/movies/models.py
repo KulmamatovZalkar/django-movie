@@ -81,6 +81,9 @@ class Movies(models.Model):
     def get_absolute_url(self):
         return reverse("movie_detail", kwargs={'slug': self.url})
 
+    def get_review(self):
+        return self.reviews_set.filter(parent__isnull = True)
+
     class Meta:
         verbose_name = "Фильм"
         verbose_name_plural = "Фильмы"
@@ -137,7 +140,7 @@ class Reviews(models.Model):
         Movies, verbose_name="фильм", on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.star} - {self.movie}"
+        return f"{self.name} - {self.movie}"
 
     class Meta:
         verbose_name = "Отзыв"
