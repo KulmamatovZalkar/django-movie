@@ -35,14 +35,20 @@
                     </li>
                     <li style="list-style: none">
                         <span><b>Режиссер:</b>
-                            {% for director in movies.directors.all %}
+                            {% for director in movies.director.all %}
+                            <a href="{% url 'actor_detail' director.name %}">
                                 {{ director.name }}
+                            </a>
+                            {% comment %} {{ director.name }} {% endcomment %}
+
                             {% endfor %}
                         </span>
                     </li>
                     <li style="list-style: none"><span><b>Актеры:</b>
                         {% for actor in movies.actors.all %}
-                            {{ actor.name }}
+                            <a href="{% url 'actor_detail' actor.name %}">
+                                {{ actor.name }}
+                            </a>
                         {% endfor %}
                     </span>
                     </li>
@@ -61,20 +67,18 @@
                     <li style="list-style: none"><span><b>Сборы в мире:</b> ${{ movies.fees_in_world }}</span>
                     </li>
                     <li style="list-style: none">
-                        <a href="#"><b>Рейтинг:</b>
-                            <span class="fa fa-star" aria-hidden="true"
-                                    style="outline: none; cursor: inherit;"></span>
-                            <span class="fa fa-star" aria-hidden="true"
-                                    style="outline: none; cursor: inherit;"></span>
-                            <span class="fa fa-star" aria-hidden="true"
-                                    style="outline: none; cursor: inherit;"></span>
-                            <span class="fa fa-star" aria-hidden="true"
-                                    style="outline: none; cursor: inherit;"></span>
-                            <span class="fa fa-star" aria-hidden="true"
-                                    style="outline: none; cursor: inherit;"></span>
-                            <span class="editContent"
-                                    style="outline: none; cursor: inherit;">5.0</span>
-                        </a>
+                        <form action="{% url 'add_rating' %}" method="post" name="rating">
+                            <b>Рейтинг:</b>
+                            {% csrf_token %}
+                            <input type="hidden" value="{{ movies.id }}" name="movies"/>
+                            <span class="rating">
+                                {% for k, v in star_form.fields.star.choices %}
+                                    <input id="rating{{ v }}" type="radio" name="star" value="{{k}}"/>
+                                    <label for="rating{{ v }}">{{k}}</label>
+                                {% endfor %}
+                            </span>
+                            <span class="editContent">4.0</span>
+                        </form> 
                     </li>
                     <div class="share-desc">
                         <div class="share">
