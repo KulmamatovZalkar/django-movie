@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'ckeditor',
     'ckeditor_uploader',
+    'snowpenguin.django.recaptcha3',
 
     'movies'
 ]
@@ -207,3 +208,9 @@ CKEDITOR_CONFIGS = {
         ]),
     }
 }
+
+
+RECAPTCHA_PUBLIC_KEY = "6LeWBJ8fAAAAAEPwg-k0c0mwpKLY1-DFW1bsMU-v"
+RECAPTCHA_PRIVATE_KEY = "6LeWBJ8fAAAAANz4xPuYENo2sT1_NurY0dSwxtAs"
+RECAPTCHA_DEFAULT_ACTION = 'generic'
+RECAPTCHA_SCORE_THRESHOLD = 0.5

@@ -2,15 +2,15 @@
 
 <div class="search-bar w3layouts-newsletter">
   <h3 class="sear-head editContent">Поиск фильма</h3>
-  <form action="#" method="post" class="d-flex editContent">
+  <form action="{% url 'search' %}" method="get" class="d-flex editContent">
     <input
       type="search"
       placeholder="Введите название..."
-      name="search"
+      name="q"
       class="form-control"
       required=""
     />
-    <button class="btn1 btn">
+    <button type="submit" class="btn1 btn">
       <span class="fa fa-search" aria-hidden="true"></span>
     </button>
   </form>
@@ -23,7 +23,12 @@
     <ul class="w3layouts-box-list">
       {% for genre in view.get_genres %}
       <li class="editContent">
-        <input type="checkbox" class="checked" name="genre" value="{{ genre.id }}"/>
+        <input
+          type="checkbox"
+          class="checked"
+          name="genre"
+          value="{{ genre.id }}"
+        />
         <span class="span editContent">{{ genre.name }}</span>
       </li>
       {% endfor %}
